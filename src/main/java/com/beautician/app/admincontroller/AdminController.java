@@ -37,5 +37,9 @@ public class AdminController {
 		return createAdminUserResponseModel;
 	}
 	
+	@GetMapping(path="getuser")
+	public String getUser() {
+		return "Hello World";
+	}
 	
 }
