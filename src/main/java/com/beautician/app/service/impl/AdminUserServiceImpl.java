@@ -63,5 +63,14 @@ public class AdminUserServiceImpl implements AdminUserService{
 		BeanUtils.copyProperties(adminUserEntity, returnValue);
 		return returnValue;
 	}
+
+	@Override
+	public AdminUserDto getUserByUserId(String userId) {
+		// TODO Auto-generated method stub
+		AdminUserDto adminUserDto = new AdminUserDto();
+		AdminUserEntity adminUserEntity = adminUserRepository.findByUserId(userId);
+		BeanUtils.copyProperties(adminUserEntity, adminUserDto);		
+		return adminUserDto;
+	}
 	
 }

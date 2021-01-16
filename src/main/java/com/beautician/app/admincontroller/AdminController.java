@@ -13,6 +13,7 @@ import com.beautician.app.admincontroller.ui.model.response.CreateAdminUserRespo
 import com.beautician.app.service.AdminUserService;
 import com.beautician.app.shared.dto.AdminUserDto;
 import com.beautician.app.ui.model.request.CreateAdminUserRequestModel;
+import com.beautician.app.ui.model.response.AdminUserResponseModel;
 
 @RestController
 @RequestMapping("admin/api/") //http://localhost:8080/admin/api/createadminuser
@@ -39,9 +40,11 @@ public class AdminController {
 	}
 	
 	@GetMapping(path="getuser")
-	public String getUser(@RequestParam String id) {
-		System.out.print("id parameter = " + id);
-		return "Hello World";
+	public AdminUserResponseModel getUser(@RequestParam String id, String name) {
+		AdminUserDto adminUserDto = adminUserService.getUserByUserId(id) ;
+		AdminUserResponseModel responseModel = new AdminUserResponseModel();
+		BeanUtils.copyProperties(adminUserDto, responseModel);
+		return responseModel;
 	}
 	
 }
