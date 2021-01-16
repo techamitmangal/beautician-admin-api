@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beautician.app.admincontroller.ui.model.response.CreateAdminUserResponseModel;
@@ -38,7 +39,8 @@ public class AdminController {
 	}
 	
 	@GetMapping(path="getuser")
-	public String getUser() {
+	public String getUser(@RequestParam String id) {
+		System.out.print("id parameter = " + id);
 		return "Hello World";
 	}
 	
