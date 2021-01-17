@@ -1,6 +1,6 @@
 package com.beautician.app.ui.model.request;
 
-public class AdminUserLoginRequestModel {
+public class AdminUserLoginReqModel {
 	private String email;
 	private String password;
 

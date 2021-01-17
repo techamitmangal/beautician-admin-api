@@ -1,6 +1,6 @@
 package com.beautician.app.ui.model.response;
 
-public class AdminUserResponseModel {
+public class AdminUserResModel {
 	
 	private String userId;
 	private String firstName;

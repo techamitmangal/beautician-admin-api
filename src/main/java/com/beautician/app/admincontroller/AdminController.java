@@ -13,8 +13,9 @@ import com.beautician.app.admincontroller.ui.model.response.CreateAdminUserRespo
 import com.beautician.app.exceptions.AdminUserServiceException;
 import com.beautician.app.service.AdminUserService;
 import com.beautician.app.shared.dto.AdminUserDto;
-import com.beautician.app.ui.model.request.CreateAdminUserRequestModel;
-import com.beautician.app.ui.model.response.AdminUserResponseModel;
+import com.beautician.app.ui.model.request.CreateAdminUserReqModel;
+import com.beautician.app.ui.model.request.UpdateUserDetailsReqModel;
+import com.beautician.app.ui.model.response.AdminUserResModel;
 import com.beautician.app.ui.model.response.ErrorMessages;
 
 @RestController
@@ -30,7 +31,7 @@ public class AdminController {
 	}
 	
 	@PostMapping(path="createadminuser")
-	public CreateAdminUserResponseModel createAdminUser(@RequestBody CreateAdminUserRequestModel adminUser) {
+	public CreateAdminUserResponseModel createAdminUser(@RequestBody CreateAdminUserReqModel adminUser) {
 		CreateAdminUserResponseModel createAdminUserResponseModel = new CreateAdminUserResponseModel();
 		
 		AdminUserDto adminUserDto = new AdminUserDto();
@@ -42,13 +43,30 @@ public class AdminController {
 	}
 	
 	@GetMapping(path="getuser")
-	public AdminUserResponseModel getUser(@RequestParam String id, String name) throws Exception{
-		System.out.print("Printing id = " + id);
-		if (id.isEmpty() || id==null || id.length()==0 || id.equals("\"\"")) throw new AdminUserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage()) ;
+	public AdminUserResModel getUser(@RequestParam String id, String name) throws Exception{
+		if (id.isEmpty() || id==null || id.length()==0 || id.equals("\"\"")) 
+			throw new AdminUserServiceException("Null pointer exception") ;
+		
 		AdminUserDto adminUserDto = adminUserService.getUserByUserId(id) ;
-		AdminUserResponseModel responseModel = new AdminUserResponseModel();
+		AdminUserResModel responseModel = new AdminUserResModel();
 		BeanUtils.copyProperties(adminUserDto, responseModel);
 		return responseModel;
+	}
+	
+	@PostMapping(path="updateuserdetails")
+	public AdminUserResModel UpdateUserDetails(@RequestBody UpdateUserDetailsReqModel updateUserDetailsReqModel) {
+		if (updateUserDetailsReqModel.getUserId().isEmpty() || updateUserDetailsReqModel.getUserId()==null) 
+			throw new AdminUserServiceException("User Id missing") ;
+		
+		AdminUserResModel adminUserResModel = new AdminUserResModel();
+		
+		AdminUserDto adminUserDto = new AdminUserDto();
+		BeanUtils.copyProperties(updateUserDetailsReqModel, adminUserDto);
+		
+		AdminUserDto updatedAdminUserDto = adminUserService.updateAdminUserDetails(adminUserDto);
+		BeanUtils.copyProperties(updatedAdminUserDto, adminUserResModel);
+		
+		return adminUserResModel;
 	}
 	
 }

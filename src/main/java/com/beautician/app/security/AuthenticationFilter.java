@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.beautician.app.SpringApplicationContext;
 import com.beautician.app.service.AdminUserService;
 import com.beautician.app.shared.dto.AdminUserDto;
-import com.beautician.app.ui.model.request.AdminUserLoginRequestModel;
+import com.beautician.app.ui.model.request.AdminUserLoginReqModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
@@ -35,8 +35,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
 		try {
-			AdminUserLoginRequestModel creds = new ObjectMapper()
-					.readValue(req.getInputStream(), AdminUserLoginRequestModel.class);
+			AdminUserLoginReqModel creds = new ObjectMapper()
+					.readValue(req.getInputStream(), AdminUserLoginReqModel.class);
 			
 			return authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(

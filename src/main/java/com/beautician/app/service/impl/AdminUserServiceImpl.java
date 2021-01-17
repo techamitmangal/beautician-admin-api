@@ -72,5 +72,22 @@ public class AdminUserServiceImpl implements AdminUserService{
 		BeanUtils.copyProperties(adminUserEntity, adminUserDto);		
 		return adminUserDto;
 	}
+
+	@Override
+	public AdminUserDto updateAdminUserDetails(AdminUserDto adminUserDto) {
+		AdminUserDto updatedAdminUserdto = new AdminUserDto();
+		AdminUserEntity adminUserEntity = adminUserRepository.findByUserId(adminUserDto.getUserId());
+		
+		if (adminUserEntity==null)
+			throw new UsernameNotFoundException(adminUserDto.getUserId());
+		
+		adminUserEntity.setFirstName(adminUserDto.getFirstName());
+		adminUserEntity.setLastName(adminUserDto.getLastName());
+		
+		AdminUserEntity updatedUserDetails = adminUserRepository.save(adminUserEntity);
+		BeanUtils.copyProperties(updatedUserDetails, updatedAdminUserdto);
+		
+		return updatedAdminUserdto;
+	}
 	
 }
