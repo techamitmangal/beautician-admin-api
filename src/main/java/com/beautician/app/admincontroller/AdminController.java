@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beautician.app.admincontroller.ui.model.response.CreateAdminUserResponseModel;
+import com.beautician.app.exceptions.AdminUserServiceException;
 import com.beautician.app.service.AdminUserService;
 import com.beautician.app.shared.dto.AdminUserDto;
 import com.beautician.app.ui.model.request.CreateAdminUserRequestModel;
 import com.beautician.app.ui.model.response.AdminUserResponseModel;
+import com.beautician.app.ui.model.response.ErrorMessages;
 
 @RestController
 @RequestMapping("admin/api/") //http://localhost:8080/admin/api/createadminuser
@@ -40,7 +42,9 @@ public class AdminController {
 	}
 	
 	@GetMapping(path="getuser")
-	public AdminUserResponseModel getUser(@RequestParam String id, String name) {
+	public AdminUserResponseModel getUser(@RequestParam String id, String name) throws Exception{
+		System.out.print("Printing id = " + id);
+		if (id.isEmpty() || id==null || id.length()==0 || id.equals("\"\"")) throw new AdminUserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage()) ;
 		AdminUserDto adminUserDto = adminUserService.getUserByUserId(id) ;
 		AdminUserResponseModel responseModel = new AdminUserResponseModel();
 		BeanUtils.copyProperties(adminUserDto, responseModel);
