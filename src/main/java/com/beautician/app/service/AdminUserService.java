@@ -9,4 +9,5 @@ public interface AdminUserService extends UserDetailsService {
 	AdminUserDto getAdminUser(String email);
 	AdminUserDto getUserByUserId(String userId);
 	AdminUserDto updateAdminUserDetails(AdminUserDto adminUserDto);
+	boolean deleteAdminUser(String userId);
 }

@@ -89,5 +89,18 @@ public class AdminUserServiceImpl implements AdminUserService{
 		
 		return updatedAdminUserdto;
 	}
+
+	@Override
+	public boolean deleteAdminUser(String userId) {
+		AdminUserEntity adminUserEntity = adminUserRepository.findByUserId(userId);
+		if (adminUserEntity==null)
+			throw new UsernameNotFoundException(userId);
+		try {
+			adminUserRepository.delete(adminUserEntity);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 	
 }

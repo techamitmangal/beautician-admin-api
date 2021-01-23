@@ -17,6 +17,7 @@ import com.beautician.app.ui.model.request.CreateAdminUserReqModel;
 import com.beautician.app.ui.model.request.UpdateUserDetailsReqModel;
 import com.beautician.app.ui.model.response.AdminUserResModel;
 import com.beautician.app.ui.model.response.ErrorMessages;
+import com.beautician.app.ui.model.response.GenericMessageResModel;
 
 @RestController
 @RequestMapping("admin/api/") //http://localhost:8080/admin/api/createadminuser
@@ -67,6 +68,20 @@ public class AdminController {
 		BeanUtils.copyProperties(updatedAdminUserDto, adminUserResModel);
 		
 		return adminUserResModel;
+	}
+	
+	@GetMapping(path="deleteuser")
+	public GenericMessageResModel DeleteUser(@RequestParam String id) {
+		if (id.isEmpty() || id==null || id.length()==0 || id.equals("\"\"")) 
+			throw new AdminUserServiceException("User Id missing") ;
+		GenericMessageResModel genericMessageResModel = new GenericMessageResModel();
+		boolean isUserDeleted = adminUserService.deleteAdminUser(id);
+		if (isUserDeleted) {
+			genericMessageResModel.setMessage("User deleted successfully");
+		} else {
+			genericMessageResModel.setMessage("User didn't find in our record");
+		}
+		return genericMessageResModel;
 	}
 	
 }
