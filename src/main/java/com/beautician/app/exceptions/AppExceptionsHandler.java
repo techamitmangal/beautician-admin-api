@@ -16,8 +16,12 @@ public class AppExceptionsHandler {
 	
 	@ExceptionHandler(value = {AdminUserServiceException.class})
 	public ResponseEntity<Object> handleAdminUserServiceException(AdminUserServiceException ex, WebRequest request) {
-		ErrorMessage errorMessage = new ErrorMessage (new Date(), ex.getMessage());
-		return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR) ;
+		ErrorMessage errorMessage = new ErrorMessage (new Date(), ex.getResMessage());
+		HttpStatus statusCode = ex.getHttpStatusCode();
+		if (statusCode == null) {
+			statusCode = HttpStatus.INTERNAL_SERVER_ERROR ;
+		}
+		return new ResponseEntity<>(errorMessage, new HttpHeaders(), statusCode) ;
 	}
 
 	@ExceptionHandler(value = {Exception.class})
@@ -25,5 +29,4 @@ public class AppExceptionsHandler {
 		ErrorMessage errorMessage = new ErrorMessage (new Date(), ex.getMessage());
 		return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR) ;
 	}
-	
 }

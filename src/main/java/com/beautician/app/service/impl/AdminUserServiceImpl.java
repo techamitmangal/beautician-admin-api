@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.beautician.app.exceptions.AdminUserServiceException;
 import com.beautician.app.io.entity.AdminUserEntity;
 import com.beautician.app.io.repositories.AdminUserRepository;
 import com.beautician.app.service.AdminUserService;
@@ -94,7 +96,8 @@ public class AdminUserServiceImpl implements AdminUserService{
 	public boolean deleteAdminUser(String userId) {
 		AdminUserEntity adminUserEntity = adminUserRepository.findByUserId(userId);
 		if (adminUserEntity==null)
-			throw new UsernameNotFoundException(userId);
+			//throw new handleAdminUserServiceException(null, "user with id = " + userId + " doesn't find in our record", HttpStatus.BAD_REQUEST);
+			throw new AdminUserServiceException("user with id = " + userId + " doesn't find in our record", HttpStatus.BAD_REQUEST);
 		try {
 			adminUserRepository.delete(adminUserEntity);
 			return true;
