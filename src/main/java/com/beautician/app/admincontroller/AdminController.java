@@ -1,5 +1,8 @@
 package com.beautician.app.admincontroller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,6 +85,19 @@ public class AdminController {
 			genericMessageResModel.setMessage("User didn't find in our record");
 		}
 		return genericMessageResModel;
+	}
+	
+	@GetMapping(path="getusers")
+	public List<AdminUserResModel> GetUsers(@RequestParam(value="page", defaultValue="1") int page, 
+			@RequestParam(value="limit", defaultValue="25") int limit) {
+		List<AdminUserResModel> adminUserResModelList = new ArrayList<AdminUserResModel>();
+		List<AdminUserDto> adminUserDtoList = adminUserService.getAdminUserListService(page, limit) ;
+		for (AdminUserDto adminUserDto : adminUserDtoList) {
+			AdminUserResModel adminUserRes = new AdminUserResModel();
+			BeanUtils.copyProperties(adminUserDto, adminUserRes);
+			adminUserResModelList.add(adminUserRes);
+		}
+		return adminUserResModelList ;
 	}
 	
 }

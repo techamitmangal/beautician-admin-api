@@ -1,9 +1,13 @@
 package com.beautician.app.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -105,5 +109,17 @@ public class AdminUserServiceImpl implements AdminUserService{
 			return false;
 		}
 	}
-	
+
+	@Override
+	public List<AdminUserDto> getAdminUserListService(int page, int limit) {
+		List<AdminUserDto> adminUserDtoList = new ArrayList<AdminUserDto> ();
+		Pageable pageableRequest = PageRequest.of(page, limit);
+		Page<AdminUserEntity> adminUserPage = adminUserRepository.findAll(pageableRequest);
+		for (AdminUserEntity adminUserEntity : adminUserPage) {
+			AdminUserDto adminUserDto = new AdminUserDto();
+			BeanUtils.copyProperties(adminUserEntity, adminUserDto);
+			adminUserDtoList.add(adminUserDto);
+		}
+		return adminUserDtoList;
+	}
 }
